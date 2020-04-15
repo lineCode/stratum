@@ -50,7 +50,7 @@ There are two version, one for SDKLT (`:sdklt`) and one for OpenNSA (`:openNSA`)
 ```bash
 docker pull stratumproject/stratum-bcm:sdklt  # or :opennsa, to update the image
 cd stratum/hal/bin/bcm/standalone/docker
-./start-stratum-container.sh
+DOCKER_IMAGE_TAG=sdklt ./start-stratum-container.sh  # or =opennsa
 ```
 
 ## Compile from source
