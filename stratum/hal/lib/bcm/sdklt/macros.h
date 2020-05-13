@@ -2,8 +2,8 @@
 // Copyright 2019-present Open Networking Foundation
 // SPDX-License-Identifier: Apache-2.0
 
-#ifndef STRATUM_HAL_LIB_BCM_MACROS_H_
-#define STRATUM_HAL_LIB_BCM_MACROS_H_
+#ifndef STRATUM_HAL_LIB_BCM_SDKLT_MACROS_H_
+#define STRATUM_HAL_LIB_BCM_SDKLT_MACROS_H_
 
 extern "C" {
 #include "shr/shr_error.h"
@@ -134,4 +134,4 @@ class BooleanBcmStatus {
 }  // namespace hal
 }  // namespace stratum
 
-#endif  // STRATUM_HAL_LIB_BCM_MACROS_H_
+#endif  // STRATUM_HAL_LIB_BCM_SDKLT_MACROS_H_

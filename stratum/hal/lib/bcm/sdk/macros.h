@@ -11,8 +11,8 @@
  *     https://github.com/Broadcom-Network-Switching-Software/OpenNSA
  */
 
-#ifndef STRATUM_HAL_LIB_BCM_MACROS_H_
-#define STRATUM_HAL_LIB_BCM_MACROS_H_
+#ifndef STRATUM_HAL_LIB_BCM_SDK_MACROS_H_
+#define STRATUM_HAL_LIB_BCM_SDK_MACROS_H_
 
 extern "C" {
 #include "bcm/error.h"
@@ -108,4 +108,4 @@ class BooleanBcmStatus {
 }  // namespace hal
 }  // namespace stratum
 
-#endif  // STRATUM_HAL_LIB_BCM_MACROS_H_
+#endif  // STRATUM_HAL_LIB_BCM_SDK_MACROS_H_
