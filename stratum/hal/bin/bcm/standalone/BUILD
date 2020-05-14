@@ -60,8 +60,8 @@ stratum_cc_binary(
         "-lyaml",
     ],
     deps = stratum_bcm_common_deps + [
-        "//stratum/hal/lib/bcm:bcm_sdklt_wrapper",
-        "//stratum/hal/lib/bcm:bcm_sdklt_diag_shell",
+        "//stratum/hal/lib/bcm/sdklt:bcm_sdk_wrapper",
+        "//stratum/hal/lib/bcm/sdklt:bcm_diag_shell",
     ],
 )
 
@@ -77,8 +77,8 @@ stratum_cc_binary(
         "-lutil",
     ],
     deps = stratum_bcm_common_deps + [
-        "//stratum/hal/lib/bcm:bcm_sdk_wrapper",
-        "//stratum/hal/lib/bcm:bcm_sdk_diag_shell",
+        "//stratum/hal/lib/bcm/sdk:bcm_sdk_wrapper",
+        "//stratum/hal/lib/bcm/sdk:bcm_diag_shell",
     ],
 )
 

@@ -37,8 +37,8 @@ extern "C" {
 #include "bcm/field.h"
 #include "bcm/port.h"
 #include "bcm/types.h"
-#include "ibde.h"
-#include "linux-bde.h"  // NOLINT
+#include "ibde.h"             // NOLINT
+#include "linux-bde.h"        // NOLINT
 #include "soc/cmext.h"
 #include "stratum/hal/lib/bcm/sdk_build_undef.h"  // NOLINT
 }

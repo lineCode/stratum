@@ -11,7 +11,7 @@
  *     https://github.com/Broadcom-Network-Switching-Software/OpenNSA
  */
 
-#include "stratum/hal/lib/bcm/bcm_sdk_wrapper.h"
+#include "stratum/hal/lib/bcm/bcm_sdk_wrapper.h"  // NOLINT
 
 #include <arpa/inet.h>
 #include <byteswap.h>
@@ -28,7 +28,7 @@
 #include <iomanip>
 #include <sstream>  // IWYU pragma: keep
 #include <string>
-#include <thread>
+#include <thread>  // NOLINT
 #include <utility>
 
 extern "C" {
@@ -48,7 +48,7 @@ extern "C" {
 #include "bcm/stack.h"
 #include "bcm/stat.h"
 #include "bcm/types.h"
-#include "kcom.h"
+#include "kcom.h"  // NOLINT
 #include "sal/appl/config.h"
 #include "sal/appl/sal.h"
 #include "sal/core/boot.h"
@@ -111,7 +111,7 @@ typedef bcm_switch_event_t soc_switch_event_t;
 typedef void (*soc_event_cb_t)(int unit, soc_switch_event_t event, uint32 arg1,
                                uint32 arg2, uint32 arg3, void* userdata);
 extern int soc_event_register(int unit, soc_event_cb_t cb, void* userdata);
-extern int soc_esw_hw_qnum_get(int unit, int port, int cos, int *qnum);
+extern int soc_esw_hw_qnum_get(int unit, int port, int cos, int* qnum);
 }  // extern "C"
 
 static_assert(SYS_BE_PIO == 0, "SYS_BE_PIO == 0");
@@ -4645,7 +4645,7 @@ template <int size>
 inline util::Status GetAclStatCounters(int unit, int stat_id,
                                        const bcm_field_stat_t stat_entry[size],
                                        uint64* counter_data) {
-  bcm_field_stat_t stat_entry_copy[size];
+  bcm_field_stat_t stat_entry_copy[size];  // NOLINT: runtime/arrays
   memcpy(stat_entry_copy, stat_entry, size * sizeof(bcm_field_stat_t));
   // Needed because of type mismatch between stratum::uint64 and bcm::uint64
   ::uint64 counter_data_ = 0;

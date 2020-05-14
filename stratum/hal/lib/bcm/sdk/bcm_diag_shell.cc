@@ -41,7 +41,7 @@ extern "C" {
 #include "soc/opensoc.h"
 #include "appl/diag/opennsa_diag.h"
 #include "sal/core/libc.h"
-#include "kcom.h"
+#include "kcom.h" // NOLINT
 #include "shared/bsl.h"
 #include "appl/diag/bslmgmt.h"
 #include "sal/appl/sal.h"

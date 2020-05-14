@@ -19,11 +19,6 @@ package(
     default_visibility = STRATUM_INTERNAL,
 )
 
-# These params are used for OpenNSA builds
-BCM_SDK_WORKSPACE = "com_github_broadcom_opennsa"
-
-BCM_SDK_TYPE = "nsa"
-
 proto_library(
     name = "bcm_proto",
     srcs = ["bcm.proto"],
@@ -52,18 +47,12 @@ stratum_cc_library(
     hdrs = ["bcm_acl_manager.h"],
     deps = [
         ":acl_table",
-        ":bcm_chassis_ro_interface",
         ":bcm_cc_proto",
+        ":bcm_chassis_ro_interface",
         ":bcm_sdk_interface",
         ":bcm_table_manager",
         ":pipeline_processor",
-        "@com_github_google_glog//:glog",
-        "@com_google_absl//absl/base:core_headers",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/container:flat_hash_set",
-        "@com_google_absl//absl/memory",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/synchronization",
+        "//stratum/glue/gtl:map_util",
         "//stratum/glue/status",
         "//stratum/glue/status:statusor",
         "//stratum/hal/lib/p4:p4_control_cc_proto",
@@ -71,11 +60,14 @@ stratum_cc_library(
         "//stratum/hal/lib/p4:p4_table_mapper",
         "//stratum/lib:utils",
         "//stratum/public/proto:p4_annotation_cc_proto",
-        "//stratum/glue/gtl:map_util",
-    ] + select({
-        # ":bcm_sdk": [":bcm_acl_pipeline"],
-        "//conditions:default": [],
-    }),
+        "@com_github_google_glog//:glog",
+        "@com_google_absl//absl/base:core_headers",
+        "@com_google_absl//absl/container:flat_hash_map",
+        "@com_google_absl//absl/container:flat_hash_set",
+        "@com_google_absl//absl/memory",
+        "@com_google_absl//absl/strings",
+        "@com_google_absl//absl/synchronization",
+    ],
 )
 
 stratum_cc_test(
@@ -239,15 +231,8 @@ stratum_cc_test(
 )
 
 cc_library(
-    name = "sdk_build_flags",
-    hdrs = ["sdk/sdk_build_flags.h"],
-    includes = ["sdk"],
-)
-
-cc_library(
-    name = "bcm_sdklt_diag_shell",
-    srcs = ["sdklt/bcm_diag_shell.cc"],
-    hdrs = ["bcm_diag_shell.h"],
+    name = "bcm_diag_shell_interface",
+    srcs = ["bcm_diag_shell.h"],
     defines = ["NDEBUG"],
     deps = [
         ":sdk_build_undef",
@@ -258,25 +243,6 @@ cc_library(
         "@com_github_google_glog//:glog",
         "@com_google_absl//absl/base:core_headers",
         "@com_google_absl//absl/synchronization",
-    ],
-)
-
-cc_library(
-    name = "bcm_sdk_diag_shell",
-    srcs = ["sdk/bcm_diag_shell.cc"],
-    hdrs = ["bcm_diag_shell.h"],
-    defines = ["NDEBUG"],
-    deps = [
-        ":sdk_build_undef",
-        "//stratum/glue:logging",
-        "//stratum/glue/status",
-        "//stratum/glue/status:statusor",
-        "//stratum/lib:macros",
-        "@com_github_google_glog//:glog",
-        "@com_google_absl//absl/base:core_headers",
-        "@com_google_absl//absl/synchronization",
-        "@%s//:headers" % BCM_SDK_WORKSPACE,
-        ":sdk_build_flags",
     ],
 )
 
@@ -601,101 +567,18 @@ stratum_cc_library(
     srcs = ["bcm_sdk_sim.cc"],
     hdrs = ["bcm_sdk_sim.h"],
     deps = [
-        ":bcm_sdk_wrapper",
-        ":macros_sdk",
         ":sdk_build_undef",
+        "//stratum/glue:logging",
+        "//stratum/glue/gtl:map_util",
+        "//stratum/glue/gtl:stl_util",
+        "//stratum/glue/status",
+        "//stratum/hal/lib/bcm/sdk:bcm_sdk_wrapper",
+        "//stratum/hal/lib/bcm/sdk:macros",
+        "//stratum/lib:macros",
         "@com_github_google_glog//:glog",
         "@com_google_absl//absl/base:core_headers",
         "@com_google_absl//absl/strings",
         "@com_google_absl//absl/synchronization",
-        #"//sandblaze/prebuilt/broadcom:bcm-sdk",
-        "//stratum/glue:logging",
-        "//stratum/glue/status",
-        "//stratum/lib:macros",
-        "//stratum/glue/gtl:map_util",
-        "//stratum/glue/gtl:stl_util",
-    ],
-)
-
-cc_library(
-    name = "bcm_sdklt_wrapper",
-    srcs = ["sdklt/bcm_sdk_wrapper.cc"],
-    hdrs = ["sdklt/bcm_sdk_wrapper.h"],
-    defines = ["NDEBUG"],
-    include_prefix = "stratum/hal/lib/bcm/",
-    strip_include_prefix = "sdklt",
-    deps = [
-        ":bcm_sdk_interface",
-        ":bcm_sdklt_diag_shell",
-        ":constants",
-        ":macros_sdklt",
-        ":sdk_build_undef",
-        "@com_github_google_glog//:glog",
-        "@com_github_jbeder_yaml_cpp//:yaml-cpp",
-        "@com_github_opennetworkinglab_sdklt//:bcm_headers",
-        "@com_github_opennetworkinglab_sdklt//:bcm_sdklt",
-        "@com_google_absl//absl/base:core_headers",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/container:flat_hash_set",
-        "@com_google_absl//absl/strings:str_format",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/synchronization",
-        "@com_google_protobuf//:protobuf",
-        "//stratum/glue:logging",
-        "//stratum/glue/status",
-        "//stratum/glue/status:statusor",
-        "//stratum/glue/status:status_macros",
-        "//stratum/glue/net_util:ipaddress",
-        "//stratum/hal/lib/common:constants",
-        "//stratum/lib:constants",
-        "//stratum/lib:macros",
-        "//stratum/lib:utils",
-        # FIXME(boc)
-        # "//util/endian",
-        "//stratum/glue/gtl:map_util",
-        "//stratum/glue/gtl:stl_util",
-        "//stratum/glue/gtl:cleanup",
-    ],
-)
-
-cc_library(
-    name = "bcm_sdk_wrapper",
-    srcs = ["sdk/bcm_sdk_wrapper.cc"],
-    hdrs = ["sdk/bcm_sdk_wrapper.h"],
-    defines = ["NDEBUG"],
-    include_prefix = "stratum/hal/lib/bcm/",
-    strip_include_prefix = "sdk",
-    deps = [
-        ":bcm_sdk_diag_shell",
-        ":bcm_sdk_interface",
-        ":constants",
-        ":macros_sdk",
-        ":sdk_build_flags",
-        ":sdk_build_undef",
-        "@com_github_google_glog//:glog",
-        "@com_google_absl//absl/base:core_headers",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/container:flat_hash_set",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/strings:str_format",
-        "@com_google_absl//absl/synchronization",
-        "@com_google_protobuf//:protobuf",
-        "//stratum/glue:logging",
-        "//stratum/glue/status",
-        "//stratum/glue/status:statusor",
-        "//stratum/glue/status:status_macros",
-        "//stratum/glue/net_util:ipaddress",
-        "//stratum/hal/lib/common:constants",
-        "//stratum/lib:constants",
-        "//stratum/lib:macros",
-        "//stratum/lib:utils",
-        # FIXME(boc)
-        # "//util/endian",
-        "//stratum/glue/gtl:map_util",
-        "//stratum/glue/gtl:stl_util",
-        "//stratum/glue/gtl:cleanup",
-        "@%s//:headers" % BCM_SDK_WORKSPACE,
-        "@%s//:libsdk" % BCM_SDK_WORKSPACE,
     ],
 )
 
@@ -941,39 +824,26 @@ stratum_cc_library(
     ],
 )
 
-stratum_cc_library(
-    name = "macros_sdklt",
-    hdrs = ["sdklt/macros.h"],
-    include_prefix = "stratum/hal/lib/bcm/",
-    strip_include_prefix = "sdklt",
+stratum_cc_test(
+    name = "macros_sdklt_test",
+    srcs = ["macros_test.cc"],
     deps = [
-        "//stratum/glue/status",
+        ":test_main",
+        "//stratum/glue/status:status_test_util",
+        "//stratum/hal/lib/bcm/sdklt:macros",
         "//stratum/lib:macros",
-        "//stratum/public/lib:error",
-        "@com_github_opennetworkinglab_sdklt//:bcm_headers",
-        "@com_github_opennetworkinglab_sdklt//:bcm_sdklt",
-    ],
-)
-
-stratum_cc_library(
-    name = "macros_sdk",
-    hdrs = ["sdk/macros.h"],
-    include_prefix = "stratum/hal/lib/bcm/",
-    strip_include_prefix = "sdk",
-    deps = [
-        "//stratum/glue/status",
-        "//stratum/lib:macros",
-        "//stratum/public/lib:error",
+        "//stratum/lib/test_utils:matchers",
+        "@com_google_googletest//:gtest",
     ],
 )
 
 stratum_cc_test(
-    name = "macros_test",
+    name = "macros_sdk_test",
     srcs = ["macros_test.cc"],
     deps = [
-        ":macros_sdklt",
         ":test_main",
         "//stratum/glue/status:status_test_util",
+        "//stratum/hal/lib/bcm/sdk:macros",
         "//stratum/lib:macros",
         "//stratum/lib/test_utils:matchers",
         "@com_google_googletest//:gtest",
