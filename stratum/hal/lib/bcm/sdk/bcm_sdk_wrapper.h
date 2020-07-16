@@ -136,8 +136,8 @@ class BcmSdkWrapper : public BcmSdkInterface {
                                 BcmPortOptions* options) override;
   ::util::Status GetPortCounters(int unit, int port, PortCounters* pc) override;
   ::util::Status StartDiagShellServer() override;
-  ::util::Status StartLinkscan(int unit) override LOCKS_EXCLUDED(data_lock_);
-  ::util::Status StopLinkscan(int unit) override LOCKS_EXCLUDED(data_lock_);
+  ::util::Status StartLinkscan(int unit) override;
+  ::util::Status StopLinkscan(int unit) override;
   void OnLinkscanEvent(int unit, int port, PortState linkstatus) override;
   ::util::StatusOr<int> RegisterLinkscanEventWriter(
       std::unique_ptr<ChannelWriter<LinkscanEvent>> writer,
