@@ -44,7 +44,6 @@ extern "C" {
 #include "kcom.h" // NOLINT
 #include "shared/bsl.h"
 #include "appl/diag/bslmgmt.h"
-#include "sal/appl/sal.h"
 #include "stratum/hal/lib/bcm/sdk_build_undef.h"  // NOLINT
 }
 

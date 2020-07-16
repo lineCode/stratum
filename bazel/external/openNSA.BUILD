@@ -42,8 +42,8 @@ cc_library(
 filegroup(
     name = "kernel_modules",
     srcs = [
-        "systems/linux/user/x86-smp_generic_64-2_6/linux-bcm-knet.ko",
-        "systems/linux/user/x86-smp_generic_64-2_6/linux-kernel-bde.ko",
-        "systems/linux/user/x86-smp_generic_64-2_6/linux-user-bde.ko",
+        "src/gpl-modules/systems/linux/user/x86-smp_generic_64-2_6/linux-bcm-knet.ko",
+        "src/gpl-modules/systems/linux/user/x86-smp_generic_64-2_6/linux-kernel-bde.ko",
+        "src/gpl-modules/systems/linux/user/x86-smp_generic_64-2_6/linux-user-bde.ko",
     ],
 )

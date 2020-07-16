@@ -280,19 +280,17 @@ def stratum_deps():
         )
 
     if "com_github_broadcom_opennsa" not in native.existing_rules():
-        new_git_repository(
+        http_archive(
             name = "com_github_broadcom_opennsa",
-            commit = "7cf5a3c9a8b76da0bc8e3217d04b33cfb11b0bcf",
-            remote = "https://github.com/Broadcom-Network-Switching-Software/OpenNSA.git",
+            sha256 = "80c3a26f688dd7fc08880fdbbad9ac3424b435697b0ccb889487f55f2bc425c4",
+            urls = ["https://docs.broadcom.com/docs-and-downloads/csg/opennsa-6.5.19.tgz"],
+            strip_prefix = "opennsa-6.5.19",
             build_file = "@//bazel:external/openNSA.BUILD",
-            shallow_since = "1584070150 -0700",
             # TODO(max): This is kind of hacky and should be improved.
             # Each string is a new bash shell, use && to run dependant commands.
             patch_cmds = [
                 "wget -qO- https://github.com/opennetworkinglab/OpenNetworkLinux/releases/download/onlpv2-dev-1.0.1/linux-4.14.49-OpenNetworkLinux.tar.xz | tar xz",
-                "cp -r src/gpl-modules/* .",
-                "export CC=gcc CXX=g++ CFLAGS='-Wno-error=unused-result -fno-pie' KERNDIR=$(realpath ./linux-4.14.49-OpenNetworkLinux) && cd systems/linux/user/x86-smp_generic_64-2_6 && make clean -j && make",
-                "git reset --hard origin/master",
+                "export CC=gcc CXX=g++ CFLAGS='-Wno-error=unused-result -fno-pie' KERNDIR=$(realpath ./linux-4.14.49-OpenNetworkLinux) && cd src/gpl-modules/systems/linux/user/x86-smp_generic_64-2_6 && make clean -j && make",
             ],
         )
 

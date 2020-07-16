@@ -112,6 +112,38 @@ typedef void (*soc_event_cb_t)(int unit, soc_switch_event_t event, uint32 arg1,
                                uint32 arg2, uint32 arg3, void* userdata);
 extern int soc_event_register(int unit, soc_event_cb_t cb, void* userdata);
 extern int soc_esw_hw_qnum_get(int unit, int port, int cos, int* qnum);
+
+// From OpenNSA 6.5.17 include/bcm/field.h
+/* Set or get a field control value. */
+extern int bcm_field_control_set(int unit, bcm_field_control_t control,
+                                 uint32 state);
+
+/* Add packet format-based offset to data qualifier object. */
+extern int bcm_field_data_qualifier_packet_format_add(
+    int unit, int qual_id, bcm_field_data_packet_format_t* packet_format);
+
+/* bcm_field_qualify_DstClassField */
+extern int bcm_field_qualify_DstClassField(int unit, bcm_field_entry_t entry,
+                                           uint32 data, uint32 mask);
+
+/*
+ * Get match criteria for bcmFieldQualifyDstClassField
+ *                qualifier from the field entry.
+ */
+extern int bcm_field_qualify_DstClassField_get(int unit,
+                                               bcm_field_entry_t entry,
+                                               uint32* data, uint32* mask);
+
+/* bcm_field_qualify_IcmpTypeCode */
+extern int bcm_field_qualify_IcmpTypeCode(int unit, bcm_field_entry_t entry,
+                                          uint16 data, uint16 mask);
+
+/*
+ * Get match criteria for bcmFieldQualifyIcmpTypeCode
+ *                qualifier from the field entry.
+ */
+extern int bcm_field_qualify_IcmpTypeCode_get(int unit, bcm_field_entry_t entry,
+                                              uint16* data, uint16* mask);
 }  // extern "C"
 
 static_assert(SYS_BE_PIO == 0, "SYS_BE_PIO == 0");
