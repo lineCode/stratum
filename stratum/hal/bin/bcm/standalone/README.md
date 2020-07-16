@@ -183,6 +183,7 @@ generate from the chassis config. It seems that only initializing some ports
 of a port quad (i.e. 3 and 4, but not 1 and 2, using logical port numbers)
 leads to this behaviour. Easiest fix is to use the full file and set unwanted
 ports administratively to down state.
+
 ### OpenNSA config file error
 
 ```
